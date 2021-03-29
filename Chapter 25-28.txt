@@ -1,0 +1,169 @@
+Chapter 25:Classes _Inheritance and polymorphism 
+Definition of inheritance:a class can be derived from an existing class,which can access public and protected in  level of the base class.
+Syntax: class DerivedClass : public baseClass{};	
+Example:
+class MyBaseClass 
+{ 
+public: 
+char c; 
+int x; 
+};
+class MyDerivedClass : public MyBaseClass 
+{ 
+public: 
+double d; 
+}; 
+class MySecondDerivedClass : public MyDerivedClass 
+{ 
+public: 
+bool b; 
+}; 
+int main() 
+{ 
+MySecondDerivedClass o; 
+o.c = 'a'; 
+o.x = 123; 
+o.d = 456.789; 
+o.b = true; 
+}
+
+
+Definition of polymorphism: a pointer to a derived class is compatible with a pointer to a base class.use virtual function to do it.this means a pointer points to a base class can points/ takes address of a derived class, then it can access appropriate version of a function, which name is reused in the derived class.
+Example:
+#include <iostream> 
+class MyAbstractClass 
+{ 
+public: 
+virtual void dowork() = 0; 
+}; 
+class MyDerivedClass : public MyAbstractClass 
+{ 
+public: 
+void dowork() 
+{ 
+std::cout << "Hello from a derived class." << '\n'; 
+} 
+}; 
+int main() 
+{ 
+MyAbstractClass* o = new MyDerivedClass; 
+o->dowork(); 
+delete o; 
+}
+Definition of Encapsulation:is grouping the fields into different visibility zones, hiding implementation from the user, and exposing the interface.
+
+Chapter 26:Exercises
+#include <iostream>
+class Person
+{
+private:
+    std::string name;
+public:
+    Person() {}
+    Person(std::string name)
+    {
+        this->name = name;
+    }
+    std::string getname() // return name of person
+    {
+        return this->name;
+    }
+    void setname(std::string name) // set name for person
+    {
+        this->name = name;
+    }
+};
+class Student : public Person
+{
+private:
+    int semester;
+
+public:
+    Student(std::string name, int semester)
+    {
+        Person::setname(name);
+        this->semester = semester;
+    }
+    int getsemester()
+    {
+        return semester;
+    }
+};
+int main()
+{
+    Person person{"David"}; // create a person in class Person
+    std::string person_name = person.getname();
+    std::cout << person_name << '\n';
+    Student student{"David", 0}; // create a student in the derive class Student
+    std::string student_name = student.getname();
+    std::cout << student_name << '\n';
+    int semester = student.getsemester();
+    std::cout << "Semester is: " << semester << '\n';
+}
+
+Chapter 27:The static specifier
+Definition:The static specifier says the object will have a static storage duration. Only one instance of a static object exists in the program.The memory space for a static object is allocated when the program begins and deallocated when the program ends.
+Example
+#include <iostream> 
+void myfunction() 
+{ 
+static int x = 0; // defined only the first time, skipped every other 
+// time 
+x++; 
+std::cout << x << '\n'; 
+} 
+int main() 
+{ 
+myfunction(); // x == 1 
+myfunction(); // x == 2 
+myfunction(); // x == 3 
+}
+
+Chapter 28:Templates
+Definition:Templates are mechanisms to support the so-called generic programming,which mean define a function or a class without worrying about what types it accepts.
+Example:
+#include <iostream> 
+template <typename T> 
+class MyClass { 
+private: 
+T x; 
+public: 
+MyClass(T xx); 
+}; 
+template <typename T> 
+MyClass<T>::MyClass(T xx) 
+: x{xx} 
+{ 
+std::cout << "Constructor invoked. The value of x is: " << x << '\n'; 
+} 
+int main() 
+{ 
+MyClass<int> o{ 123 }; 
+MyClass<double> o2{ 456.789 }; 
+} 
+
+ *Note: A template can have more than 1 params
+Example:
+#include <iostream> 
+template <typename T, typename U> 
+void myfunction(T t, U u) 
+{ 
+std::cout << "The first parameter is: " << t << '\n'; 
+std::cout << "The second parameter is: " << u << '\n'; 
+} 
+int main() 
+{ 
+int x = 123; 
+double d = 456.789; 
+myfunction<int, double>(x, d); 
+}
+
+
+
+
+
+
+
+
+
+
